@@ -1,26 +1,13 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+// const userController = require("./../controllers/userController");
+const authController = require("./../controllers/authController");
 
+const router = express.Router();
 
-
-//POST LOGIN ROUTE
-router.post("/login", (req, res) => {
-    console.log(req.body);
-    console.log(req.params);
-    res.json({
-        userId: "123",
-        token: "dad"
-    })
-});
-
-//POST REGISTER ROUTE
-router.post("/signup", (req, res) => {
-    console.log(req.body);
-    console.log(req.params);
-    res.json({
-        userId: "123",
-        token: "dad"
-    })
-});
+router.post("/signup", authController.signup);
+router.post("/login", authController.login);
+// router.post("/login", (req, res) => {
+//   res.send("login");
+// });
 
 module.exports = router;
