@@ -1,34 +1,37 @@
-require("dotenv").config();
-const express = require('express');
-const bodyParser = require("body-parser");
-const cors = require('cors');
-const app = express();
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-
-var authRoute = require("./routes/authRoutes");
-require('./DB/connection')
-
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-
-app.use('/api/auth',authRoute);
-
-
-
-app.get("/", (req, res) => {
-    res.send("API working!");
+process.on("uncaughtException", (err) => {
+  console.log("UNCAUGHT EXCEPTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  process.exit(1);
 });
 
+dotenv.config({ path: "./config.env" });
+const app = require("./app");
 
+mongoose
+  .connect(process.env.DATABASEURL, {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("DB connection successful!"));
 
+const port = process.env.PORT || 3000;
+const server = app.listen(port, () => {
+  console.log(`App running on port ${port}...`);
+});
 
-//SERVER LISTENING ROUTE
+process.on("unhandledRejection", (err) => {
+  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
 
-var PORT = process.env.PORT || 3000;
-
-app.listen(PORT, (req, res) => {
-    console.log("server started at: " + PORT);
+process.on("SIGTERM", () => {
+  console.log("👋 SIGTERM RECEIVED. Shutting down gracefully");
+  server.close(() => {
+    console.log("💥 Process terminated!");
+  });
 });
