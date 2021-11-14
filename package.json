@@ -55,6 +55,7 @@
     "mquery": "^4.0.0",
     "ms": "^2.0.0",
     "negotiator": "^0.6.2",
+    "nodemon": "^2.0.15",
     "object-assign": "^4.1.1",
     "on-finished": "^2.3.0",
     "parseurl": "^1.3.3",
