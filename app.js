@@ -28,13 +28,12 @@ const postRouter = require("./routes/postRoutes");
 const app = express();
 
 app.enable("trust proxy");
-
 app.set("view engine", "pug");
 // app.set("views", path.join(__dirname, "views"));
 
 // 1) GLOBAL MIDDLEWARES
 // Implement CORS
-// app.use(cors());
+app.use(cors());
 // Access-Control-Allow-Origin *
 // api.natours.com, front-end natours.com
 // app.use(cors({
