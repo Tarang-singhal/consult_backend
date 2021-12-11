@@ -15,9 +15,9 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
   },
-  photo: {
+  image: {
     type: String,
-    default: "default.jpg",
+    default: "https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg",
   },
   role: {
     type: String,
@@ -49,6 +49,18 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
+  callRate:{
+    type: Number,
+    default: 2
+  },
+  location:{
+    type: String,
+    default:"Delhi"
+  },
+  professionName:{
+    type:String,
+    default: "professional"
+  }
 });
 
 userSchema.pre("save", async function (next) {
