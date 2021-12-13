@@ -4,7 +4,6 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 exports.initiatePayment = catchAsync(async (req, res) => {
-    console.log(req.body);
     const {userId, orderId, amount} = req.body;
     var paytmParams = {};
 
@@ -21,8 +20,6 @@ exports.initiatePayment = catchAsync(async (req, res) => {
             "custId": userId
         },
     };
-
-    console.log(paytmParams);
 
     PaytmChecksum.generateSignature(JSON.stringify(paytmParams.body), process.env.TEST_MERCHANT_KEY).then(function (checksum) {
         paytmParams.head = {
@@ -68,6 +65,23 @@ exports.initiatePayment = catchAsync(async (req, res) => {
 })
 
 exports.callbackUrlHandler = catchAsync(async (req,res) => {
-    console.log(req.body, req.params, req.query);
+    console.log(req.body);
+    //OUTPUT SAMPLE
+    // {
+    //     "BANKNAME": "Kotak Bank",
+    //     "BANKTXNID": "18229248941",
+    //     "CHECKSUMHASH": "pkondAZuhu1AcLoMl3miEH5eElyx5SAwQ8fgZyb6QHdAxdW3Z7G/OvF990kJ6uq0V1Wh66sVwXNhYoV8V0IbsKY8vDw/JrlyuaLgLkZjUg0=",
+    //     "CURRENCY": "INR",
+    //     "GATEWAYNAME": "NKMB",
+    //     "MID": "vvDrhO48383680943249",
+    //     "ORDERID": "PARCEL10480b10479",
+    //     "PAYMENTMODE": "NB",
+    //     "RESPCODE": "01",
+    //     "RESPMSG": "Txn Success",
+    //     "STATUS": "TXN_SUCCESS",
+    //     "TXNAMOUNT": "100.00",
+    //     "TXNDATE": "2021-12-13 16:19:00.0",
+    //     "TXNID": "20211213111212800110168598803247322",
+    //   }
     res.status(200).send("hello");
 })
