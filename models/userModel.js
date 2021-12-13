@@ -60,6 +60,10 @@ const userSchema = new mongoose.Schema({
   professionName:{
     type:String,
     default: "professional"
+  },
+  walletAmount: {
+    type: Number,
+    default: 0,
   }
 });
 
