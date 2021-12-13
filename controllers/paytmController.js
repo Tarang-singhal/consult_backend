@@ -5,19 +5,20 @@ const AppError = require("../utils/appError");
 
 exports.initiatePayment = catchAsync(async (req, res) => {
     console.log(req.body);
+    const {userId, orderId, amount} = req.body;
     var paytmParams = {};
 
     paytmParams.body = {
         "requestType": "Payment",
         "mid": process.env.TEST_MERCHANT_ID,
-        "orderId": req.body.orderId,
-        "callbackUrl": "https://<callback URL to be used by merchant>",
+        "orderId": orderId,
+        "callbackUrl": `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderId}`,
         "txnAmount": {
-            "value": req.body.amount,
+            "value": amount,
             "currency": "INR",
         },
         "userInfo": {
-            "custId": req.body.userId
+            "custId": userId
         },
     };
 
@@ -39,7 +40,7 @@ exports.initiatePayment = catchAsync(async (req, res) => {
             // hostname: 'securegw.paytm.in',
 
             port: 443,
-            path: `/theia/api/v1/initiateTransaction?mid=${process.env.TEST_MERCHANT_ID}&orderId=${req.body.orderId}`,
+            path: `/theia/api/v1/initiateTransaction?mid=${process.env.TEST_MERCHANT_ID}&orderId=${orderId}`,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
