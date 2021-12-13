@@ -12,7 +12,7 @@ exports.initiatePayment = catchAsync(async (req, res) => {
         "requestType": "Payment",
         "mid": process.env.TEST_MERCHANT_ID,
         "orderId": orderId,
-        "callbackUrl": `https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID=${orderId}`,
+        "callbackUrl": `${process.env.BASE_URL}/paytm/callbackURL`,
         "txnAmount": {
             "value": amount,
             "currency": "INR",
@@ -65,4 +65,9 @@ exports.initiatePayment = catchAsync(async (req, res) => {
         res.status(400).json(err)
     })
 
+})
+
+exports.callbackUrlHandler = catchAsync(async (req,res) => {
+    console.log(req.body, req.params, req.query);
+    res.status(200).send("hello");
 })
