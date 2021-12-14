@@ -26,7 +26,7 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 
 exports.addMoney = async (userId, amount) => {
   const response = false;
-  await User.findById(userId, (err, userFound) => {
+  await new User.findById(userId, (err, userFound) => {
     if (err) {
       return;
     }
