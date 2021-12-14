@@ -26,13 +26,9 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 
 exports.addMoney = async (userId, amount) => {
   const response = false;
-  await User.findByIdAndUpdate(userId, {walletAmount: "$walletAmount"+amount},(err, doc) => {
-    if(err){
-      console.log(err);
-      return;
-    }
-    response = true;
-    console.log(doc);
-  });
-  return response;
+  const doc = await User.findById(userId);
+  console.log(doc,amount);
+  await doc.updateOne({walletAmount: doc.walletAmount+amount});
+  await doc.save();
+  return doc;
 }

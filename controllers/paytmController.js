@@ -12,7 +12,7 @@ exports.initiatePayment = catchAsync(async (req, res) => {
         "requestType": "Payment",
         "mid": process.env.TEST_MERCHANT_ID,
         "orderId": orderId,
-        "callbackUrl": `${process.env.BASE_URL}/paytm/callbackURL?userId=${userId}`,
+        "callbackUrl": `${process.env.BASE_URL}/paytm/callbackURL?userId=${userId}?`,
         "txnAmount": {
             "value": amount,
             "currency": "INR",
