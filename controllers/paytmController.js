@@ -1,6 +1,7 @@
 const https = require('https');
 const PaytmChecksum = require('paytmchecksum');
 const catchAsync = require("../utils/catchAsync");
+const UserController = require('./userController');
 const AppError = require("../utils/appError");
 
 exports.initiatePayment = catchAsync(async (req, res) => {
@@ -11,7 +12,7 @@ exports.initiatePayment = catchAsync(async (req, res) => {
         "requestType": "Payment",
         "mid": process.env.TEST_MERCHANT_ID,
         "orderId": orderId,
-        "callbackUrl": `${process.env.BASE_URL}/paytm/callbackURL`,
+        "callbackUrl": `${process.env.BASE_URL}/paytm/callbackURL?userId=${userId}`,
         "txnAmount": {
             "value": amount,
             "currency": "INR",
@@ -83,5 +84,11 @@ exports.callbackUrlHandler = catchAsync(async (req,res) => {
     //     "TXNDATE": "2021-12-13 16:19:00.0",
     //     "TXNID": "20211213111212800110168598803247322",
     //   }
+
+    // const userId = req.body
+    console.log(req.query);
+
+    // UserController.addMoney()
+
     res.status(200).send("hello");
 })
