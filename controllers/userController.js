@@ -24,8 +24,8 @@ exports.getUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.addMoney = catchAsync(async (userId, amount) => {
+exports.addMoney = async (userId, amount) => {
   User.findByIdAndUpdate(userId, {walletAmount: walletAmount+amount},(err, doc) => {
     console.log(doc);
   });
-})
+}

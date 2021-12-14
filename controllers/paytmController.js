@@ -5,7 +5,7 @@ const UserController = require('./userController');
 const AppError = require("../utils/appError");
 
 exports.initiatePayment = catchAsync(async (req, res) => {
-    const {userId, orderId, amount} = req.body;
+    const { userId, orderId, amount } = req.body;
     var paytmParams = {};
 
     paytmParams.body = {
@@ -65,8 +65,12 @@ exports.initiatePayment = catchAsync(async (req, res) => {
 
 })
 
-exports.callbackUrlHandler = catchAsync(async (req,res) => {
-    console.log(req.body);
+exports.callbackUrlHandler = catchAsync(async (req, res) => {
+    //console.log(req.query)
+    //OUTPUT SAMPLE
+    //{ userId: '61b46db54ec0816002bb7670' }
+
+    // console.log(req.body);
     //OUTPUT SAMPLE
     // {
     //     "BANKNAME": "Kotak Bank",
@@ -85,10 +89,10 @@ exports.callbackUrlHandler = catchAsync(async (req,res) => {
     //     "TXNID": "20211213111212800110168598803247322",
     //   }
 
-    // const userId = req.body
-    console.log(req.query);
+    const { userId } = req.query;
+    const amount = parseFloat(req.body.TXNAMOUNT);
 
-    // UserController.addMoney()
+    await UserController.addMoney(userId, amount);
 
     res.status(200).send("hello");
 })
