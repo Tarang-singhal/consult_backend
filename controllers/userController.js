@@ -27,8 +27,8 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 exports.addMoney = async (userId, amount) => {
   const response = false;
   const doc = await User.findById(userId);
-  console.log(doc,amount);
-  await doc.updateOne({walletAmount: doc.walletAmount+amount});
+  console.log(doc, amount);
+  await doc.updateOne({ walletAmount: doc.walletAmount + amount });
   await doc.save();
   return doc;
 }
@@ -37,9 +37,7 @@ exports.getUser = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: {
-      data: user,
-    },
+    data: user,
   });
 });
 
