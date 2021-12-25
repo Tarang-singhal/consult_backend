@@ -177,12 +177,6 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 10,
       },
-      slots: [
-        {
-          type: mongoose.Schema.ObjectId,
-          ref: "Slot",
-        },
-      ],
     },
     saturday: {
       active: {
