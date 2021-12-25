@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.get("/", userController.getUsers);
 router.get("/:userId", userController.getUser);
-router.get("/slots/:userId", userController.getAllSlots);
+router.get("/slotsAsUser/:userId", userController.getSlotsAsUser);
+router.get("/slotsAsConsultant/:userId", userController.getSlotsAsConsultant);
 // router.get("/logout", authController.logout);
 
 // router.post("/forgotPassword", authController.forgotPassword);

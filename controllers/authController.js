@@ -36,22 +36,15 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const slotsAsUser = await Slot.create({ consultant_id: this.id });
-
-  const newUser = await User.create({
+  let newUser = await User.create({
     name: req.body.email.split("@")[0],
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    slots_booked_by_this: slotsAsUser.id,
   });
+
   createSendToken(newUser, 201, req, res);
 });
-
-// exports.login = (req, res, next) => {
-//   res.send("login");
-// };
-
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   console.log(

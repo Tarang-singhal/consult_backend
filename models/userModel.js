@@ -66,11 +66,18 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  slots_booked_by_this: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Slot",
-  },
-
+  slot_booked_as_user: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Slot",
+    },
+  ],
+  slot_booked_as_consultant: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Slot",
+    },
+  ],
   availablity: {
     monday: {
       active: {

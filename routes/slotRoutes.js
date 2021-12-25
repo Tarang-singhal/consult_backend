@@ -4,6 +4,7 @@ const slotsController = require("../controllers/slotsController");
 const router = express.Router();
 
 router.post("/bookSlot", slotsController.bookSlot);
+router.delete("/cancelSlot/:slotId", slotsController.cancelSlot);
 
 // router.post("/login", (req, res) => {
 //   res.send("login");

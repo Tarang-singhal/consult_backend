@@ -10,54 +10,28 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
   const endTime = req.body.endTime;
   const callRate = req.body.callRate || 0;
 
-  if ((await Slot.findOne({ consultant_id: consultantId })) == undefined) {
-    await Slot.create({
-      consultant_id: consultantId,
-      booked_slots: [],
-    });
-  }
-
+  // CHECKING WALLET BALANCE
   const userWalletBalance = await User.findById(userId).select("+walletAmount");
 
   if (userWalletBalance.walletAmount < callRate) {
     return next(new AppError("Not enough credits!", 400));
   }
 
-  const slots = await Slot.findOneAndUpdate(
-    { consultant_id: consultantId },
-    {
-      $push: {
-        booked_slots: {
-          booked_by: userId,
-          start_time: startTime,
-          end_time: endTime,
-          amount_paid: callRate,
-        },
-      },
-    },
-    { new: true }
-  );
-
-  const user = await User.findByIdAndUpdate(userId, {
-    $inc: { walletAmount: -callRate },
+  const slots = await Slot.create({
+    user_id: userId,
+    start_time: startTime,
+    end_time: endTime,
+    amount_paid: callRate,
+    consultant_id: consultantId,
   });
 
-  await Slot.findOneAndUpdate(
-    { consultant_id: user.slot_booked_by_this },
-    {
-      $push: {
-        booked_slots: {
-          booked_by: userId,
-          start_time: startTime,
-          end_time: endTime,
-          amount_paid: callRate,
-        },
-      },
-    }
-  );
-
+  await User.findByIdAndUpdate(userId, {
+    $inc: { walletAmount: -callRate },
+    $push: { slot_booked_as_user: slots._id },
+  });
   await User.findByIdAndUpdate(consultantId, {
     $inc: { walletAmount: callRate },
+    $push: { slot_booked_as_consultant: slots._id },
   });
 
   // SEND RESPONSE
@@ -69,4 +43,30 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
   });
 });
 
-// TODO: ADD A CANCELLATION OF A BOOKED SLOT AND RETURN THE CREDITS TO THE USER
+exports.cancelSlot = catchAsync(async (req, res, next) => {
+  const slotId = req.params.slotId;
+
+  const slot = await Slot.findById(slotId);
+
+  if (!slot) {
+    return next(new AppError("Slot not found", 404));
+  }
+
+  await User.findByIdAndUpdate(slot.user_id, {
+    $pull: { slot_booked_as_user: slotId },
+    $inc: { walletAmount: slot.amount_paid },
+  });
+  await User.findByIdAndUpdate(slot.consultant_id, {
+    $pull: { slot_booked_as_consultant: slotId },
+    $inc: { walletAmount: -slot.amount_paid },
+  });
+
+  await slot.remove();
+
+  res.status(202).json({
+    status: "success",
+    data: {
+      slot,
+    },
+  });
+});
