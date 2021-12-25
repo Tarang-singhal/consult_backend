@@ -36,7 +36,7 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const slotsAsUser = await Slot.create({ consultantId: this.id });
+  const slotsAsUser = await Slot.create({ consultant_id: this.id });
 
   const newUser = await User.create({
     name: req.body.email.split("@")[0],
