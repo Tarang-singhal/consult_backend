@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: "https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg",
+    default:
+      "https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg",
   },
   role: {
     type: String,
@@ -38,22 +39,178 @@ const userSchema = new mongoose.Schema({
     default: true,
     select: false,
   },
-  callRate:{
+  callRate: {
     type: Number,
-    default: 2
+    default: 2,
   },
-  location:{
+  location: {
     type: String,
-    default:"Delhi"
+    default: "Delhi",
   },
-  professionName:{
-    type:String,
-    default: "professional"
+  professionName: {
+    type: String,
+    default: "professional",
   },
   walletAmount: {
     type: Number,
     default: 0,
-  }
+  },
+  availability: {
+    monday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: () => "10:00",
+      },
+      end: {
+        type: String,
+        default: "18:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+    tuesday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: "10:00",
+      },
+      end: {
+        type: String,
+        default: "18:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+    wednesday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: "10:00",
+      },
+      end: {
+        type: String,
+        default: "18:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+    thursday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: "10:00",
+      },
+      end: {
+        type: String,
+        default: "18:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+    friday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: "10:00",
+      },
+      end: {
+        type: String,
+        default: "18:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+    saturday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: "10:00",
+      },
+      end: {
+        type: String,
+        default: "6:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+    sunday: {
+      active: {
+        type: Boolean,
+        default: true,
+      },
+      start: {
+        type: String,
+        default: "10:00",
+      },
+      end: {
+        type: String,
+        default: "18:00",
+      },
+      slotSize: {
+        type: Number,
+        default: 30,
+      },
+      breakSize: {
+        type: Number,
+        default: 10,
+      },
+    },
+  },
 });
 
 userSchema.pre("save", async function (next) {
