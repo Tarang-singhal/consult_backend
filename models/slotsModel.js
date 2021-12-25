@@ -14,6 +14,10 @@ const slotsSchema = new mongoose.Schema({
       },
       start_time: Date,
       end_time: Date,
+      amount_paid: {
+        type: Number,
+        default: 0,
+      },
     },
   ],
 });

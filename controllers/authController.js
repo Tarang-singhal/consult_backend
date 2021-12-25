@@ -5,6 +5,7 @@ const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const APIFeatures = require("./../utils/apiFeatures");
+const Slot = require("../models/slotsModel");
 // const Email = require("./../utils/email");
 
 const signToken = (id) => {
@@ -35,11 +36,14 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  const slotsAsUser = await Slot.create({ consultantId: this.id });
+
   const newUser = await User.create({
     name: req.body.email.split("@")[0],
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    slots_booked_by_this: slotsAsUser.id,
   });
   createSendToken(newUser, 201, req, res);
 });

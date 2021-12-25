@@ -23,3 +23,27 @@ exports.getUsers = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: user,
+    },
+  });
+});
+
+// TODO: POPULATE ALL BOOKED SLOTS OF USER
+
+exports.getAllSlots = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId)
+    .select("+slots_booked_by_this")
+    .populate("slots_booked_by_this");
+
+  res.status(200).json({
+    status: "success",
+    data: user.slots_booked_by_this,
+  });
+});

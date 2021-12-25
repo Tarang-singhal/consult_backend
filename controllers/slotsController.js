@@ -19,7 +19,6 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
 
   const userWalletBalance = await User.findById(userId).select("+walletAmount");
 
-  //TODO: RATE -CHECK IF USER HAS ENOUGH MONEY/CREDITS
   if (userWalletBalance.walletAmount < callRate) {
     return next(new AppError("Not enough credits!", 400));
   }
@@ -32,16 +31,20 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
           booked_by: userId,
           start_time: startTime,
           end_time: endTime,
+          amount_paid: callRate,
         },
       },
     },
     { new: true }
   );
 
-  //TODO: ADD THIS SLOT ID IN USER MODEL
-
   await User.findByIdAndUpdate(userId, {
     $push: { slots_booked_by_this: slots._id },
+    $inc: { walletAmount: -callRate },
+  });
+
+  await User.findByIdAndUpdate(consultantId, {
+    $inc: { walletAmount: callRate },
   });
 
   // SEND RESPONSE
@@ -52,3 +55,5 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+// TODO: ADD A CANCELLATION OF A BOOKED SLOT AND RETURN THE CREDITS TO THE USER
