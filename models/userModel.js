@@ -55,7 +55,19 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  availability: {
+  slot_booked_as_user: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Slot",
+    },
+  ],
+  slot_booked_as_consultant: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Slot",
+    },
+  ],
+  availablity: {
     monday: {
       active: {
         type: Boolean,
@@ -165,6 +177,12 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 10,
       },
+      slots: [
+        {
+          type: mongoose.Schema.ObjectId,
+          ref: "Slot",
+        },
+      ],
     },
     saturday: {
       active: {

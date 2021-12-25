@@ -32,3 +32,47 @@ exports.addMoney = async (userId, amount) => {
   await doc.save();
   return doc;
 }
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      data: user,
+    },
+  });
+});
+
+exports.getSlotsAsUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId).populate({
+    path: "slot_booked_as_user",
+    populate: {
+      path: "consultant_id",
+      select:
+        "-availablity -password -passwordConfirm -__v -createdAt -updatedAt -walletAmount -slot_booked_as_user -slot_booked_as_consultant",
+    },
+  });
+
+  res.status(200).json({
+    status: "success",
+    length: user.slot_booked_as_user.length,
+    data: user.slot_booked_as_user,
+  });
+});
+
+exports.getSlotsAsConsultant = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.userId).populate({
+    path: "slot_booked_as_consultant",
+    populate: {
+      path: "user_id",
+      select:
+        "-availablity -password -passwordConfirm -__v -createdAt -updatedAt -walletAmount -slot_booked_as_user -slot_booked_as_consultant",
+    },
+  });
+
+  res.status(200).json({
+    status: "success",
+    length: user.slot_booked_as_consultant.length,
+    data: user.slot_booked_as_consultant,
+  });
+});

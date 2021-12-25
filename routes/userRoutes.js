@@ -5,6 +5,9 @@ const userController = require("./../controllers/userController.js");
 const router = express.Router();
 
 router.get("/", userController.getUsers);
+router.get("/:userId", userController.getUser);
+router.get("/slotsAsUser/:userId", userController.getSlotsAsUser);
+router.get("/slotsAsConsultant/:userId", userController.getSlotsAsConsultant);
 // router.get("/logout", authController.logout);
 
 // router.post("/forgotPassword", authController.forgotPassword);
