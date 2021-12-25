@@ -38,10 +38,23 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
     { new: true }
   );
 
-  await User.findByIdAndUpdate(userId, {
-    $push: { slots_booked_by_this: slots._id },
+  const user = await User.findByIdAndUpdate(userId, {
     $inc: { walletAmount: -callRate },
   });
+
+  await Slot.findOneAndUpdate(
+    { consultant_id: user.slot_booked_by_this },
+    {
+      $push: {
+        booked_slots: {
+          booked_by: userId,
+          start_time: startTime,
+          end_time: endTime,
+          amount_paid: callRate,
+        },
+      },
+    }
+  );
 
   await User.findByIdAndUpdate(consultantId, {
     $inc: { walletAmount: callRate },
