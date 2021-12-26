@@ -25,14 +25,14 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.addMoney = async (userId, amount, transaction) => {
-  const response = false;
-  const doc = await User.findById(userId);
-  console.log(doc, amount);
-  await doc.updateOne({
+
+  const doc = await User.findByIdAndUpdate(userId, {
     $inc: { walletAmount: amount },
-    $push: { paymentHistory: transaction },
-  });
-  await doc.save();
+    $push: { paymentHistory: transaction }
+  }, { new: true });
+
+  console.log(doc)
+
   return doc;
 };
 exports.getUser = catchAsync(async (req, res, next) => {
