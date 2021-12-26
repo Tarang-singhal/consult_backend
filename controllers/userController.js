@@ -25,13 +25,16 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 });
 
 exports.addMoney = async (userId, amount, transaction) => {
+  const doc = await User.findByIdAndUpdate(
+    userId,
+    {
+      $inc: { walletAmount: amount },
+      $push: { paymentHistory: transaction },
+    },
+    { new: true }
+  );
 
-  const doc = await User.findByIdAndUpdate(userId, {
-    $inc: { walletAmount: amount },
-    $push: { paymentHistory: transaction }
-  }, { new: true });
-
-  console.log(doc)
+  console.log(doc);
 
   return doc;
 };
@@ -75,5 +78,20 @@ exports.getSlotsAsConsultant = catchAsync(async (req, res, next) => {
     status: "success",
     length: user.slot_booked_as_consultant.length,
     data: user.slot_booked_as_consultant,
+  });
+});
+
+exports.updateAvailability = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.userId,
+    {
+      availablity: req.body.availablity,
+    },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    status: "success",
+    data: user,
   });
 });
