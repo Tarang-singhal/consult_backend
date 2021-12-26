@@ -2,12 +2,14 @@ const Slot = require("../models/slotsModel.js");
 const User = require("../models/userModel.js");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const Meeting = require("google-meet-api").meet;
+const dayjs = require("dayjs");
 
 exports.bookSlot = catchAsync(async (req, res, next) => {
   const consultantId = req.body.consultantId;
   const userId = req.body.userId;
-  const startTime = req.body.startTime;
-  const endTime = req.body.endTime;
+  const startTime = req.body.startTime || dayjs("2022-10-10").toISOString();
+  const endTime = req.body.endTime || dayjs().toISOString();
   const callRate = req.body.callRate || 0;
 
   // CHECKING WALLET BALANCE
@@ -16,6 +18,26 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
   if (userWalletBalance.walletAmount < callRate) {
     return next(new AppError("Not enough credits!", 400));
   }
+  const meetingLink = await Meeting({
+    clientId:
+      "535716446508-ic2c51h29ch06f8rbqdacnhrrr14ins5.apps.googleusercontent.com",
+    clientSecret: "TbI_NuwocMqgppTWRGoHwhyC",
+    refreshToken:
+      "1//04Za5UVmJx_baCgYIARAAGAQSNwF-L9Irez8WF54FV8AsAofBoSNEqutPP-65mvvfO8qtefSGfkvdzpqMqRFM6FIK_56r8G3geaU",
+    date: dayjs(startTime).format("YYYY-MM-DD"),
+    time: dayjs(startTime).format("HH:mm"),
+    summary: "summary",
+    location: "location",
+    description: "description",
+  });
+
+  if (!meetingLink)
+    return next(
+      new AppError(
+        "Could not create meeting link .Maybe you are busy for this time slot",
+        400
+      )
+    );
 
   const slots = await Slot.create({
     user_id: userId,
@@ -23,6 +45,7 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
     end_time: endTime,
     amount_paid: callRate,
     consultant_id: consultantId,
+    meeting_link: meetingLink,
   });
 
   await User.findByIdAndUpdate(userId, {

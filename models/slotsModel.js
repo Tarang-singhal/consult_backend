@@ -12,6 +12,7 @@ const slotsSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  meeting_link: String,
   consultant_id: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
