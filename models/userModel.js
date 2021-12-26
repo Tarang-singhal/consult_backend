@@ -223,6 +223,14 @@ const userSchema = new mongoose.Schema({
       },
     },
   },
+  paymentHistory: [
+    {
+      STATUS: String,
+      TXNAMOUNT: String,
+      TXNDATE: Date,
+      TXNID: String,
+    },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

@@ -24,14 +24,17 @@ exports.getUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.addMoney = async (userId, amount) => {
+exports.addMoney = async (userId, amount, transaction) => {
   const response = false;
   const doc = await User.findById(userId);
   console.log(doc, amount);
-  await doc.updateOne({ walletAmount: doc.walletAmount + amount });
+  await doc.updateOne({
+    $inc: { walletAmount: amount },
+    $push: { paymentHistory: transaction },
+  });
   await doc.save();
   return doc;
-}
+};
 exports.getUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.params.userId);
 
