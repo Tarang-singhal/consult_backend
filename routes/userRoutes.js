@@ -8,7 +8,7 @@ router.get("/", userController.getUsers);
 router.get("/:userId", userController.getUser);
 router.get("/slotsAsUser/:userId", userController.getSlotsAsUser);
 router.get("/slotsAsConsultant/:userId", userController.getSlotsAsConsultant);
-router.patch("/:userId", userController.updateAvailability);
+router.patch("/saveAvailablity/:userId", userController.updateAvailability);
 // router.get("/logout", authController.logout);
 
 // router.post("/forgotPassword", authController.forgotPassword);
