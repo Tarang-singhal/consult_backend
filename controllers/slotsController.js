@@ -25,8 +25,8 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
     refreshToken:
       "1//04WoReQ3QsO4MCgYIARAAGAQSNwF-L9Ir2gGhCIxLje_NyqkQXVX2G-W5vhnRZhKXWH_ulJqBjf-awspxEVgYVAR1tQeGlKO99dM",
     date: dayjs(startTime).format("YYYY-MM-DD"),
-    startTime: dayjs(startTime).format("HH:mm"),
-    endTime: dayjs(endTime).format("HH:mm"),
+    time: dayjs(startTime).format("HH:mm"),
+    // endTime: dayjs(endTime).format("HH:mm"),
     summary: "summary",
     location: "location",
     description: "description",
