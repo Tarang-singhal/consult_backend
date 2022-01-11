@@ -23,7 +23,7 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
       "535716446508-ic2c51h29ch06f8rbqdacnhrrr14ins5.apps.googleusercontent.com",
     clientSecret: "TbI_NuwocMqgppTWRGoHwhyC",
     refreshToken:
-      "1//04WoReQ3QsO4MCgYIARAAGAQSNwF-L9Ir2gGhCIxLje_NyqkQXVX2G-W5vhnRZhKXWH_ulJqBjf-awspxEVgYVAR1tQeGlKO99dM",
+      "1//04xO7Ee49A9I_CgYIARAAGAQSNwF-L9IrqEZZfoq7Y5IMuUGljnwFj39tuzA38bdPMZF7EbtOWStnmaw2r7WXpbvvr6WokaWYQk0",
     date: dayjs(startTime).format("YYYY-MM-DD"),
     time: dayjs(startTime).format("HH:mm"),
     summary: "summary",
