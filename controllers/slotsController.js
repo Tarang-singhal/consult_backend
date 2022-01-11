@@ -2,7 +2,7 @@ const Slot = require("../models/slotsModel.js");
 const User = require("../models/userModel.js");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
-const Meeting = require("google-meet-api").meet;
+const Meeting = require("./meet").meet;
 const dayjs = require("dayjs");
 
 exports.bookSlot = catchAsync(async (req, res, next) => {
@@ -25,7 +25,8 @@ exports.bookSlot = catchAsync(async (req, res, next) => {
     refreshToken:
       "1//04WoReQ3QsO4MCgYIARAAGAQSNwF-L9Ir2gGhCIxLje_NyqkQXVX2G-W5vhnRZhKXWH_ulJqBjf-awspxEVgYVAR1tQeGlKO99dM",
     date: dayjs(startTime).format("YYYY-MM-DD"),
-    time: dayjs(startTime).format("HH:mm"),
+    startTime: dayjs(startTime).format("HH:mm"),
+    endTime: dayjs(endTime).format("HH:mm"),
     summary: "summary",
     location: "location",
     description: "description",
